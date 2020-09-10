@@ -3,14 +3,8 @@ import { Row, Col, Input, InputNumber } from 'antd';
 import './Form.less';
 export default class Form extends Component{
     componentWillMount(){
-      let _portArr =  [
-        '127.0.0.1:8081',
-        '127.0.0.1:8082',
-        '127.0.0.1:8083',
-        '127.0.0.1:8084',
-      ]
-      let { portArr=_portArr } = this.props;
-      var _data = portArr.map(i=>{
+      let { ipList } = this.props;
+      var _data = ipList.map(i=>{
         let arr = i.split(':');
         let obj = {};
         obj.ip = arr[0];
@@ -26,17 +20,16 @@ export default class Form extends Component{
       let dataStr = data.map(item => {
         let strArr = []
         strArr.push(item.ip,item.port);
-        strArr.join(':');
-        return strArr;
-      })
-      return dataStr;
+        return strArr.join(':');
+      });
+      this.props.getIpData && this.props.getIpData(dataStr);
     }
 
     ipChange = (ip,idx) => {
       let {data} = this.state;
       data[idx].ip = ip;
       this.setState({data},()=>{
-        this.notifyUp(data)
+        this.notifyUp(data);
       });
     }
 
@@ -44,7 +37,7 @@ export default class Form extends Component{
       let { data } = this.state;
       data[idx].port = port;
       this.setState({data},()=>{
-        this.notifyUp(data)
+        this.notifyUp(data);
       });
     }
 
