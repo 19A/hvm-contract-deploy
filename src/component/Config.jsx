@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, Button, message } from 'antd';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Row, Col, Input, Button, message, Switch } from 'antd';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import Form from './Form';
 import File from './File';
-
+const {TextArea} = Input;
 export default class Config extends Component {
   state = {
     fileList: [],
     uploading: false,
+    encrypt:false,
+    accountJson:'',
     ipList: [
       '127.0.0.1:8081',
       '127.0.0.1:8082',
@@ -18,20 +20,24 @@ export default class Config extends Component {
   }
 
   handleUpload = () => {
-    const { fileList, ipList } = this.state;
+    const { fileList, ipList, encrypt, accountJson } = this.state;
     const formData = new FormData();
     fileList.forEach(file => {
-      formData.append('files[]', file);
+      formData.append('file', file);
     });
 
     this.setState({
       uploading: true,
     });
     let that = this;
-    formData.append('ipList', ipList);
+    formData.append('nodeUrl', ipList);
+    formData.append('encrypt', encrypt);
+    if(!accountJson.trim()){
+      formData.append('accountJson', accountJson);
+    };
     console.log(fileList, 'form', formData);
     $.ajax({
-      url: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      url: 'http://47.106.251.33:556/deploy',
       type: 'POST',
       data: formData,
       contentType: false,
@@ -49,11 +55,11 @@ export default class Config extends Component {
           fileList: [],
           uploading: false,
         });
-        window.fileData = {data:res};
+        sessionStorage.setItem('fileData',res);
         that.props.history.push('/back');
         message.success('upload successfully.');
       },
-      error: function () {
+      error: function (x,y) {
         that.setState({
           uploading: false,
         });
@@ -103,7 +109,7 @@ export default class Config extends Component {
   }
 
   render() {
-    const { fileList, uploading, ipList } = this.state;
+    const { fileList, uploading, ipList, encrypt } = this.state;
     return (
       <div className="App" >
         <Row>
@@ -111,7 +117,9 @@ export default class Config extends Component {
             <Form getIpData={this.getIpData} ipList={ipList} />
           </Col>
           <Col span={12}>
-            <Input type='textarea' />
+            <Row gutter={16} style={{margin:'0 0 20px 0'}}>
+              <TextArea height='100px'onChange={(v)=>{this.setState({accountJson:v})}}/></Row>
+            <Row gutter={16}><Switch value={encrypt} onChange={()=>{this.setState({encrypt:!encrypt})}}/></Row>
           </Col>
         </Row>
         <File
