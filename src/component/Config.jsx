@@ -32,12 +32,12 @@ export default class Config extends Component {
     let that = this;
     formData.append('nodeUrl', ipList);
     formData.append('encrypt', encrypt);
-    if(!accountJson.trim()){
+    if (!accountJson || !accountJson.trim()){
       formData.append('accountJson', accountJson);
     };
     console.log(fileList, 'form', formData);
     $.ajax({
-      url: 'http://47.106.251.33:556/deploy',
+      url: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       type: 'POST',
       data: formData,
       contentType: false,
@@ -59,7 +59,7 @@ export default class Config extends Component {
         that.props.history.push('/back');
         message.success('upload successfully.');
       },
-      error: function (x,y) {
+      error: function () {
         that.setState({
           uploading: false,
         });

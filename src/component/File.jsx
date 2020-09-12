@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+import style from 'style-loader';
 import './File.less';
 const {Dragger} = Upload;
 export default class File extends Component {
