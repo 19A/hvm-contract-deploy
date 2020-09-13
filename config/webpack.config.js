@@ -352,16 +352,16 @@ module.exports = function(webpackEnv) {
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
             {
-              test: /\.(less|css)$/,
+              test: /\.(css|less)$/,
               use:[
                 {
-                  loader:'style-loader'
+                  loader: require.resolve('style-loader')
                 },
                 {
-                  loader:'css-loader?modules'
+                  loader: require.resolve('css-loader')
                 },
                 {
-                  loader:'less-loader'
+                  loader:require.resolve('less-loader')
                 }
               ]
             },

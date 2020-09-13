@@ -111,8 +111,8 @@ export default class Config extends Component {
   render() {
     const { fileList, uploading, ipList, encrypt } = this.state;
     return (
-      <div className="App" >
-        <Row>
+      <div className="app" style={{padding:'10px'}}>
+        <Row style={{margin:'20px 0'}}>
           <Col span={12}>
             <Form getIpData={this.getIpData} ipList={ipList} />
           </Col>
@@ -123,17 +123,20 @@ export default class Config extends Component {
           </Col>
         </Row>
         <File
+          
           getFileList={this.getFileList}
         />
-        <Button
-          type="primary"
-          onClick={this.handleUpload}
-          disabled={this.checkData()}
-          loading={uploading}
-          style={{ marginTop: 16 }}
-        >
-          {uploading ? 'loding' : 'submit'}
-        </Button>
+        <Row type='flex' justify='center' style={{ margin: '20px 0' }}>
+          <Button
+            type="primary"
+            onClick={this.handleUpload}
+            disabled={this.checkData()}
+            loading={uploading}
+            style={{ marginTop: 16 }}
+          >
+            {uploading ? 'loding' : 'submit'}
+          </Button>
+        </Row>
       </div>
     );
   }
