@@ -30,25 +30,34 @@ export default class Config extends Component {
       uploading: true,
     });
     let that = this;
-    formData.append('nodeUrl', ipList);
-    formData.append('encrypt', encrypt);
-    if (!accountJson || !accountJson.trim()){
-      formData.append('accountJson', accountJson);
+    let request = {};
+    request.nodeUrl = ipList;
+    request.encrypt = encrypt;
+    if (!accountJson || !accountJson.trim()) {
+      request.accountJson = accountJson;
     };
+    formData.append('request', request);
     console.log(fileList, 'form', formData);
     $.ajax({
-      url: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      url: 'http://47.106.251.33:8088/deploy',
+      // xhrFields: {
+      //   withCredentials: true    // 前端设置是否带cookie
+      // },
+      headers: {//跨域
+        'Access-Control-Allow-Origin': true,
+        withCredentials: true,
+        'Content-Diposition':'form-data;name=request'
+      },
+      // AccessControlAllowOrigin:true,
+      // crossDomain:true,   // 会让请求头中包含跨域的额外信息，但不会含cookie
       type: 'POST',
       data: formData,
       contentType: false,
       processData: false,
       dataType: 'json',
       // contentType:"multipart/form-data",
-
       // data: JSON.stringify(param),
       // contentType: "application/json; charset=UTF-8",
-
-      // // processData:false,
       success: function (res) {
         console.log('success', res);
         that.setState({
@@ -123,7 +132,6 @@ export default class Config extends Component {
           </Col>
         </Row>
         <File
-          
           getFileList={this.getFileList}
         />
         <Row type='flex' justify='center' style={{ margin: '20px 0' }}>
