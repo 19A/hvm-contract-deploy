@@ -20,12 +20,18 @@ export default class Config extends Component {
   }
 
   handleUpload = () => {
-    const { fileList, ipList, encrypt, accountJson } = this.state;
-    const formData = new FormData();
+    let { fileList, ipList, encrypt, accountJson } = this.state;
+    let formData = new FormData();
     fileList.forEach(file => {
       formData.append('file', file);
     });
-
+    // var fileBlob = new Blob(fileList,{type:'application/json'});
+    var requestBlob = new Blob([JSON.stringify(
+      {
+        nodeUrl: ipList,
+        encrypt: encrypt
+      }
+    )],{type:'application/json'});
     this.setState({
       uploading: true,
     });
@@ -33,31 +39,32 @@ export default class Config extends Component {
     let request = {};
     request.nodeUrl = ipList;
     request.encrypt = encrypt;
-    if (!accountJson || !accountJson.trim()) {
-      request.accountJson = accountJson;
-    };
-    formData.append('request', request);
-    console.log(fileList, 'form', formData);
+    // if (accountJson && !accountJson.trim()) {
+    //   formData.append('accountJson', accountJson);
+    // };
+    // formData.append('nodeUrl', ipList);
+    formData.append('request', requestBlob,'json');
+    // console.log(fileList, 'form', formData);
     $.ajax({
       url: 'http://47.106.251.33:8088/deploy',
+      // headers: {//跨域
+      //   'Access-Control-Allow-Origin': true,
+      //   withCredentials: true,
+      // },
+      // AccessControlAllowOrigin:true,
+      // crossDomain:true,   // 会让请求头中包含跨域的额外信息，但不会含cookie
       // xhrFields: {
       //   withCredentials: true    // 前端设置是否带cookie
       // },
-      headers: {//跨域
-        'Access-Control-Allow-Origin': true,
-        withCredentials: true,
-        'Content-Diposition':'form-data;name=request'
-      },
-      // AccessControlAllowOrigin:true,
-      // crossDomain:true,   // 会让请求头中包含跨域的额外信息，但不会含cookie
       type: 'POST',
       data: formData,
+      async: true,
+      cache:false,
       contentType: false,
       processData: false,
       dataType: 'json',
-      // contentType:"multipart/form-data",
-      // data: JSON.stringify(param),
-      // contentType: "application/json; charset=UTF-8",
+      contentType:"multipart/form-data;boundary=WebAppBoundary",
+      // contentType: "application/json;",
       success: function (res) {
         console.log('success', res);
         that.setState({
