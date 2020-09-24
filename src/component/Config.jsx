@@ -36,7 +36,7 @@ export default class Config extends Component {
     // request.accountJson = accountJson;
     formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }), 'request');
     $.ajax({
-      url: 'http://47.106.251.33:8088/deploy',
+      url: 'http://127.0.0.1:8088/api/deploy',
       headers: {//跨域
         'Access-Control-Allow-Origin': true,
         withCredentials: true,
