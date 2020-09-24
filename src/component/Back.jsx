@@ -7,7 +7,7 @@ var dom = [];
 var _time='';
 export default class Back extends Component {
   state = {
-    fileData:sessionStorage.getItem('fileData') || null,
+    fileData: null,
     showCountDown:false,
     now:new Date(),
   }
@@ -60,7 +60,7 @@ export default class Back extends Component {
     clearInterval(_time);
   }
   render() {
-    let { showCountDown } = this.state;
+    let { showCountDown, fileData } = this.state;
     let _item = {
       "hypercharin":{
         "namespace":"1",
@@ -70,17 +70,23 @@ export default class Back extends Component {
         "nodeUrl":"7"
       }
     }
-    let data =  _item;
-    let { hypercharin } = data;
+    let data =  JSON.parse(sessionStorage.getItem('fileData')).data;
+    // let data =  _item;
+    let { hyperchain } = data;
+    let { nodeUrl } = hyperchain;
     let _indent = {textIndent:'2em'}
     return (
+      // &nbsp;
+      
       <div className="back" style={{width:'80%',margin:'0 auto'}}>
-        <div className="text" style={{width:'100%',border:'1px solid gray',lineHeight:'1em',padding:'1em'}}>
-          <p>hypercharin:</p>
-          <p style={_indent}>namespace:{hypercharin.namespace}</p>
-          <p style={_indent}>contractAddress:{hypercharin.contractAddress}</p>
-          <p style={_indent}>accountJson:{hypercharin.accountJson}</p>
-          <p style={_indent}>nodeUrl:{hypercharin.nodeUrl}</p>
+        <div className="text" style={{width:'100%',lineHeight:'1em',padding:'1em'}}>
+          <pre>
+            hyperchain:<br/>
+            {'  namespace: ' + hyperchain.namespace}<br/>
+            {'  contractAddress: ' + `'${hyperchain.contractAddress}'`}<br/>
+            {'  nodeUrl: '+ nodeUrl.join(',')}<br/>
+            {'  accountJson: ' + `'${hyperchain.accountJson}'`}
+          </pre>
         </div>
         <Row style={{marginTop:'2em'}}>
           <Col span={4}>
