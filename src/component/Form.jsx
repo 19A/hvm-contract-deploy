@@ -25,9 +25,9 @@ export default class Form extends Component{
       this.props.getIpData && this.props.getIpData(dataStr);
     }
 
-    ipChange = (ip,idx) => {
+    ipChange = (e,idx) => {
       let {data} = this.state;
-      data[idx].ip = ip;
+      data[idx].ip = e.target.value;
       this.setState({data},()=>{
         this.notifyUp(data);
       });
@@ -45,9 +45,9 @@ export default class Form extends Component{
       let dom = [];
       data.map((item, idx) => (
         dom.push(
-          <Row key={JSON.stringify(item)}>
+          <Row>
             <Col span={12}>
-              <Input value={item.ip} onChange={(value)=>{this.ipChange(value,idx)}}/>
+              <Input value={item.ip} onChange={(e)=>{this.ipChange(e,idx)}}/>
             </Col>
             <Col span={12}>
               <InputNumber value={item.port} onChange={(value) => { this.portChange(value, idx) }}/>
