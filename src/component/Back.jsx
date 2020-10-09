@@ -70,40 +70,17 @@ export default class Back extends Component {
         "nodeUrl":"7"
       }
     }
-    let data =  JSON.parse(sessionStorage.getItem('fileData')).data || {};
-    // let data =  _item;
-    if(!data || !data.hyperchain) return (<div>
-      <Row style={{ marginTop: '2em' }}>
-        <Col span={4}>
-          <Button type='primary' onClick={() => { this.props.history.push('/config') }}>
-            Back
-            </Button>
-        </Col>
-        <Col span={4}>
-          <Button type='primary' onClick={this.copyData}>
-            Copy
-            </Button>
-        </Col>
-        <Col span={4}>
-          <Button type='primary' onClick={this.showCountDown}>
-            {showCountDown ? '关闭死亡倒计时' : '显示死亡倒计时'}
-          </Button>
-        </Col>
-        <Col span={4}>
-          {
-            showCountDown && <div className='count-down'>
-              {this.getCountDown()}
-            </div>
-          }
-        </Col>
-      </Row>
-    </div>)
-    let { hyperchain } = data;
+    let localeData = JSON.parse(sessionStorage.getItem('fileData'));
+    if (localeData && localeData.data && localeData.data.hyperchain) {
+      var _data = localeData.data || {};
+    }else {
+      return (<div>
+        no _data
+      </div>)
+    }
+    let { hyperchain } = _data;
     let { nodeUrl } = hyperchain;
-    let _indent = {textIndent:'2em'}
     return (
-      // &nbsp;
-      
       <div className="back" style={{width:'80%',margin:'0 auto'}}>
         {<div className="text" style={{ width: '100%', lineHeight: '1em', padding: '1em' }}>
           <pre>
@@ -125,7 +102,7 @@ export default class Back extends Component {
               Copy
             </Button>
           </Col>
-          <Col span={4}>
+          {/* <Col span={4}>
             <Button type='primary' onClick={this.showCountDown}>
               {showCountDown ? '关闭死亡倒计时' : '显示死亡倒计时'}
             </Button>
@@ -136,7 +113,7 @@ export default class Back extends Component {
                 {this.getCountDown()}
               </div>
             }
-          </Col>
+          </Col> */}
         </Row>
         <Row>
           <div className='bg-img'></div>
