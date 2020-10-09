@@ -105,7 +105,7 @@ export default class Config extends Component {
           <Col span={12}>
             <Row gutter={16} style={{ margin: '0 0 20px 0' }}>
               <TextArea height='100px' onChange={this.getAccountJson} /></Row>
-            <Row gutter={16}><Switch value={encrypt} sonChange={() => { this.setState({ encrypt: !encrypt }) }} /></Row>
+            <Row gutter={16}><Switch checked={encrypt} onChange={() => { this.setState({ encrypt: !encrypt }) }} /></Row>
           </Col>
         </Row>
         <File
